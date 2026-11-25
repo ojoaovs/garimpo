@@ -47,7 +47,6 @@ export default async function LayoutPainel({ children }: { children: React.React
         { href: "/conta", nome: "Conta e sistema", icone: "conta" as const },
       ],
     },
-    { nome: "Comunidade", itens: [{ href: "/pedagio", nome: "Pedágio", icone: "pedagio" as const }] },
   ];
   return (
     <div className="min-h-[100svh]">

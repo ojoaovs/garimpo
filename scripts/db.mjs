@@ -36,7 +36,7 @@ const schema = base.replace(`provider = "__PROVEDOR__"`, `provider = "${provedor
 const anterior = existsSync("prisma/schema.prisma") ? readFileSync("prisma/schema.prisma", "utf8") : "";
 const marca = "dados/.banco";
 const ultimo = existsSync(marca) ? readFileSync(marca, "utf8") : "";
-const assinatura = `${provedor}|${url}|${schema.length}|${hash(schema)}`;
+const assinatura = `${provedor}|${hash(url)}|${schema.length}|${hash(schema)}`;
 const clienteExiste = existsSync("src/generated/prisma/client.ts");
 
 if (schema !== anterior) writeFileSync("prisma/schema.prisma", schema);

@@ -52,8 +52,8 @@ export function rota<P = Record<string, string>>(fn: (req: Request, quem: Quem, 
     } catch (e) {
       if (e instanceof ErroApi) return erro(e.status, e.codigo, e.message, e.extra);
       if (e instanceof z.ZodError) return erro(400, "parametros_invalidos", "Parâmetros inválidos.", { problemas: e.issues.map((i) => ({ campo: i.path.join("."), mensagem: i.message })) });
-      console.error("[api]", e);
-      return erro(500, "erro_interno", e instanceof Error ? e.message : "Erro interno.");
+      console.error("[api] Falha interna.");
+      return erro(500, "erro_interno", "Erro interno.");
     }
   };
 }

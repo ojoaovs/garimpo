@@ -65,10 +65,10 @@ export async function pedirNovaSenha(_: Resultado, f: FormData): Promise<Resulta
   } catch (e) {
     if (e instanceof EmailIndisponivel) {
       // Sem e-mail configurado: o link vai para o terminal de quem roda o sistema.
-      console.log(`\n[senha] E-mail não configurado. Link para ${u.email}:\n${link}\n`);
-      return { ok: true, mensagem: "O e-mail ainda não está configurado: o link apareceu no terminal onde o sistema roda. Ou rode npm run senha." };
+      if (process.env.NODE_ENV !== "production") console.log(`[senha] Link local: ${link}`);
+      return neutro;
     }
-    console.error("[senha]", e);
+    console.error("[senha] Falha no envio de e-mail.");
     return { ok: false, mensagem: "Não consegui enviar o e-mail. Confira o Resend em Conexões." };
   }
   return neutro;

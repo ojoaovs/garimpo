@@ -107,4 +107,4 @@ export async function importarGithub(endereco: string, token?: string): Promise<
   return { importadas };
 }
 
-export const REPO_PADRAO = "https://github.com/matheusmongarde/skill-prospeccao";
+export const REPO_PADRAO = "";
