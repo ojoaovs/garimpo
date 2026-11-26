@@ -1,7 +1,8 @@
 import "server-only";
 
 // Coleção Bradesign v2 — HTML autocontido, sem dependências de animação.
-export const temas = [
+export type Tema = { id: string; nome: string; nicho: string; estilo: string; demo: string; html: string; ativo: boolean; trocas: string; categoria: string; defaults: Record<string, string> };
+export const temas: Tema[] = [
   {
     "id": "brd-premium-studio-v4",
     "nome": "Agência, design e tecnologia — Studio",
