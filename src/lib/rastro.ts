@@ -1,6 +1,7 @@
 import "server-only";
 
 import { ativo } from "@/lib/config";
+import { cloudflareHeaders } from "@/lib/cloudflare-access";
 
 /** Lugar como o Rastro devolve. */
 export type Lugar = {
@@ -42,7 +43,8 @@ async function chamar(caminho: string, corpo: unknown): Promise<Lugar[]> {
   try {
     r = await fetch(`${base}${caminho}`, {
       method: "POST",
-      headers: { "content-type": "application/json", "x-rastro-token": token },
+      headers: { ...cloudflareHeaders(base, "rastro.bradesign.online"), "content-type": "application/json", "x-rastro-token": token },
+      redirect: "error",
       body: JSON.stringify(corpo),
       signal: AbortSignal.timeout(150_000),
       cache: "no-store",
@@ -67,10 +69,12 @@ export const buscarPorTipo = (tipo: string, cidade: string, limite: number, excl
 
 export async function testarRastro(url: string, token: string) {
   try {
-    const saude = await fetch(`${url.replace(/\/+$/, "")}/saude`, { signal: AbortSignal.timeout(4000) });
+    const headers = cloudflareHeaders(url, "rastro.bradesign.online");
+    const saude = await fetch(`${url.replace(/\/+$/, "")}/saude`, { headers, redirect: "error", signal: AbortSignal.timeout(4000) });
     if (!saude.ok) return { ok: false, mensagem: `Respondeu ${saude.status}.` };
-    const auth = await fetch(`${url.replace(/\/+$/, "")}/nada`, { method: "POST", headers: { "x-rastro-token": token }, signal: AbortSignal.timeout(4000) });
-    if (auth.status === 401) return { ok: false, mensagem: "Está no ar, mas o token não confere." };
+    const auth = await fetch(`${url.replace(/\/+$/, "")}/nada`, { method: "POST", headers: { ...headers, "x-rastro-token": token }, redirect: "error", signal: AbortSignal.timeout(4000) });
+    if (auth.status === 401 || auth.status === 403) return { ok: false, mensagem: "Está no ar, mas o token não confere." };
+    if (auth.status !== 404) return { ok: false, mensagem: `Resposta inesperada do Rastro (${auth.status}).` };
     return { ok: true, mensagem: "Rastro no ar e token certo." };
   } catch {
     return { ok: false, mensagem: `Nada respondendo em ${url}.` };

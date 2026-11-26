@@ -1,6 +1,7 @@
 import "server-only";
 
 import { ativo, type Valores } from "@/lib/config";
+import { cloudflareHeaders } from "@/lib/cloudflare-access";
 import { variantes } from "@/lib/telefone";
 
 /**
@@ -28,7 +29,7 @@ export class WhatsappIndisponivel extends Error {}
 async function http<T>(url: string, init: RequestInit & { timeoutMs?: number } = {}): Promise<T> {
   let r: Response;
   try {
-    r = await fetch(url, { ...init, signal: AbortSignal.timeout(init.timeoutMs ?? 20_000), cache: "no-store" });
+    r = await fetch(url, { ...init, redirect: "error", signal: AbortSignal.timeout(init.timeoutMs ?? 20_000), cache: "no-store" });
   } catch (e) {
     throw new WhatsappIndisponivel(`Sem resposta de ${new URL(url).host}: ${e instanceof Error ? e.message : e}`);
   }
@@ -45,7 +46,7 @@ const fora = (p: string, detalhe: string): Situacao => ({ provedor: p, estado: "
 
 function baileys(v: Valores): ClienteWhatsapp {
   const base = sem(String(v.url || "http://127.0.0.1:4320"));
-  const h = { "content-type": "application/json", "x-whatsapp-token": String(v.token || "") };
+  const h = { ...cloudflareHeaders(base, "zap.bradesign.online"), "content-type": "application/json", "x-whatsapp-token": String(v.token || "") };
   const situ = (s: { estado: Estado; qr: string | null; numero: string | null }): Situacao => ({ provedor: "baileys", ...s });
   return {
     id: "baileys",
