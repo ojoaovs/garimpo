@@ -129,7 +129,7 @@ export const MODELO_EXEMPLO = `<!doctype html>
 <title>{{nome}}</title>
 <style>
   * { box-sizing: border-box; }
-  :root { --papel: #edf2ec; --tinta: #20382f; --painel: #c7dbc8; }
+  :root { --papel: #f3e7d4; --tinta: #382818; --painel: #d1975b; }
   body { margin: 0; color: var(--tinta); background: var(--papel); font: 1rem/1.55 system-ui, sans-serif; }
   main { width: min(1120px, 100% - 32px); margin-inline: auto; }
   h1 { font: 400 clamp(3.25rem, 9vw, 8rem)/.98 Georgia, serif; letter-spacing: -.055em; margin: 12px 0 24px; overflow-wrap: anywhere; }
@@ -139,7 +139,11 @@ export const MODELO_EXEMPLO = `<!doctype html>
   :focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
   .capa { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 24px; padding-block: clamp(24px, 6vw, 88px); align-items: stretch; }
   .capa > div:first-child { display: grid; align-content: center; }
-  .marca { display: grid; place-items: center; min-height: 285px; overflow: hidden; border-radius: 50% 50% 8px 8px / 36% 36% 8px 8px; background: var(--painel); font: 400 clamp(5rem, 14vw, 12rem)/1 Georgia, serif; }
+  .marca { position: relative; margin: 0; display: grid; place-items: center; min-height: 360px; overflow: hidden; border-radius: 50% 50% 12px 12px / 28% 28% 12px 12px; background: linear-gradient(145deg, var(--painel), #f5d597); font: 400 clamp(5rem, 14vw, 12rem)/1 Georgia, serif; }
+  .marca img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: aproxima 1s ease-out both; }
+  .marca figcaption { position: absolute; right: 12px; bottom: 12px; background: #291d17e0; color: #fff5e3; padding: 5px 9px; border-radius: 4px; font: 12px/1.3 system-ui, sans-serif; }
+  @keyframes aproxima { from { transform: scale(1.08); } to { transform: scale(1); } }
+  @media (prefers-reduced-motion: reduce) { .marca img { animation: none; } }
   .acoes { display: flex; flex-wrap: wrap; gap: 10px; }
   .acoes a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 9px 16px; border: 1px solid currentColor; color: inherit; border-radius: 8px; font-weight: 650; text-decoration: none; }
   .acoes a:first-child { background: var(--tinta); border-color: var(--tinta); color: var(--papel); }
@@ -162,7 +166,7 @@ export const MODELO_EXEMPLO = `<!doctype html>
         <a href="{{maps_link}}" target="_blank" rel="noopener noreferrer">Como chegar</a>
       </div>
     </div>
-    <div class="marca" aria-hidden="true">{{iniciais}}</div>
+    <figure class="marca"><span aria-hidden="true">{{iniciais}}</span><img src="/temas/fotos/11159533.webp" alt="" fetchpriority="high"><figcaption>Foto ilustrativa</figcaption></figure>
   </section>
   <div class="dados">
     <section class="data"><h2>Onde fica</h2><p class="optional">{{endereco}}</p><p class="optional">{{cidade}}</p></section>

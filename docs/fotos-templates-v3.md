@@ -87,3 +87,16 @@ A coleção v5 serve versões WebP dessas mesmas fotos em `public/temas/fotos`. 
 - https://www.pexels.com/photo/32100684/
 - https://www.pexels.com/photo/26925251/
 - https://www.pexels.com/photo/26925246/
+
+## Seleção de imagens adicionadas na v6
+
+- Forma: https://www.pexels.com/photo/1571460/
+- Mesa: https://www.pexels.com/photo/958545/, https://www.pexels.com/photo/675951/ e https://www.pexels.com/photo/1267320/
+- Atlas: https://www.pexels.com/photo/3184291/
+- Vitrine: https://www.pexels.com/photo/1926769/
+- Pulso: https://www.pexels.com/photo/1552242/, https://www.pexels.com/photo/2261477/ e https://www.pexels.com/photo/416778/
+- Ofício: https://www.pexels.com/photo/4489702/
+- Horizonte: https://www.pexels.com/photo/248797/
+- Navalha: https://www.pexels.com/photo/3998421/ e https://www.pexels.com/photo/1319460/
+- Feira: https://www.pexels.com/photo/1128678/
+- Passo: https://www.pexels.com/photo/2529148/

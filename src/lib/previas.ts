@@ -72,16 +72,16 @@ export async function renderizarPrevia(slug: string, contarVisita = false): Prom
   const base = valoresDoNegocio(p.negocio);
   const defaults = defaultsDoTemaPublicado(p.modelo.slug);
   const premium = p.modelo.slug.startsWith(prefixoTemasPremium);
-  const atual = premium && p.modelo.slug.endsWith("-v5");
+  const fotosLocais = premium && /-v[56]$/.test(p.modelo.slug);
   const valores: Record<string, string> = {
     ...defaults,
     ...base,
-    ...(defaults ? { foto_capa: base.foto || (atual ? defaults.foto_capa : "") } : {}),
+    ...(defaults ? { foto_capa: base.foto || (fotosLocais ? defaults.foto_capa : "") } : {}),
     ...Object.fromEntries(Object.entries(extra).filter(([, v]) => v !== "")),
   };
   if (premium) {
     for (const chave of ["foto", "foto_capa", "foto_1", "foto_2", "foto_3", "whatsapp_link", "maps_link"]) {
-      const ilustracao = atual && chave.startsWith("foto_") ? defaults?.[chave] ?? "" : "";
+      const ilustracao = fotosLocais && chave.startsWith("foto_") ? defaults?.[chave] ?? "" : "";
       if (ilustracao && valores[chave] === ilustracao) continue;
       try {
         const u = new URL(valores[chave] || "");
@@ -91,7 +91,7 @@ export async function renderizarPrevia(slug: string, contarVisita = false): Prom
       }
     }
   }
-  const html = premium && !atual
+  const html = premium && !fotosLocais
     ? p.modelo.html.replace(/<div class="topline">[\s\S]*?<\/div>(?=<section class="hero">)/, "")
     : p.modelo.html;
   return preencher(aplicarTrocas(html, trocas), valores);

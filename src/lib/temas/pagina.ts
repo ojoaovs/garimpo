@@ -1,5 +1,7 @@
 import { direcaoDoTema } from "./direcao";
 import { estiloConsulta, estilos } from "./estilos";
+import { camposFoto, type CampoFoto, type FotosTema } from "./fotos";
+import { galeria } from "./galeria";
 import { interacoes } from "./interacoes";
 import { segmentos } from "./segmentos";
 
@@ -58,20 +60,16 @@ function consulta(segmento: Segmento) {
   </section>`;
 }
 
-function imagem(variavel: string, capa = false) {
+function imagem(variavel: CampoFoto, ilustracao: string) {
+  const capa = variavel === "foto_capa";
   return `<figure class="media">
     <span class="initials" aria-hidden="true">{{iniciais}}</span>
-    <img src="{{${variavel}}}" alt="" decoding="async" ${capa ? 'fetchpriority="high"' : 'loading="lazy"'} referrerpolicy="no-referrer">
+    <img src="{{${variavel}}}" data-ilustracao="${ilustracao}" alt="" decoding="async" ${capa ? 'fetchpriority="high"' : 'loading="lazy"'} referrerpolicy="no-referrer">
     <figcaption>Foto ilustrativa</figcaption>
   </figure>`;
 }
 
-const midiaEContato = String.raw`
-for (const img of document.querySelectorAll(".media img")) {
-  const hide = () => { img.hidden = true; };
-  img.addEventListener("error", hide, { once: true });
-  if (img.complete && !img.naturalWidth) hide();
-}
+const contatoPorAssunto = String.raw`
 const contato = document.querySelector("[data-wa]");
 if (contato?.getAttribute("href")?.startsWith("https://wa.me/")) {
   const original = new URL(contato.href);
@@ -85,32 +83,33 @@ if (contato?.getAttribute("href")?.startsWith("https://wa.me/")) {
 }
 `;
 
-export function paginaDoTema(
-  slug: keyof typeof segmentos,
-  fotos: readonly string[],
-) {
+export function paginaDoTema(slug: keyof typeof segmentos, fotos: FotosTema) {
   const direcao = direcaoDoTema(slug);
-  const fotosIlustrativas = fotos
+  const fotosIlustrativas = Object.values(fotos)
     .map(
       (url) =>
         `.media img[src="${url}"]:not([hidden]) + figcaption { display: block; }`,
     )
     .join("\n");
-  const servicos = `<section class="section wrap" id="servicos" aria-labelledby="titulo-servicos">
+  const servicos = `<section class="section explore" id="servicos" aria-labelledby="titulo-servicos">
+    <div class="wrap">
     <h2 class="section-title" id="titulo-servicos">{{titulo_servicos}}</h2>
     <div class="services">
-      ${[1, 2, 3]
-        .map(
-          (n) => `<article>
-        ${imagem(`foto_${n}`)}
+      ${camposFoto
+        .slice(1)
+        .map((campo, i) => {
+          const n = i + 1;
+          return `<article>
+        ${imagem(campo, fotos[campo])}
         <div class="service-copy">
           <h3>{{servico_${n}}}</h3>
           <p>{{descricao_${n}}}</p>
           <a class="service-link" href="#contato" data-topic="{{servico_${n}}}" aria-label="Consultar sobre {{servico_${n}}}">Consultar</a>
         </div>
-      </article>`,
-        )
+      </article>`;
+        })
         .join("\n")}
+    </div>
     </div>
   </section>`;
   const atendimento = consulta(segmentos[slug]);
@@ -153,7 +152,22 @@ export function paginaDoTema(
             <a class="map" href="{{maps_link}}" target="_blank" rel="noopener noreferrer">Como chegar</a>
           </div>
         </div>
-        ${imagem("foto_capa", true)}
+        <div class="hero-visual">
+          ${imagem("foto_capa", fotos.foto_capa)}
+          ${camposFoto
+            .slice(1)
+            .map(
+              (campo, i) =>
+                `<span hidden data-foto="{{${campo}}}" data-ilustracao="${fotos[campo]}" data-titulo="{{servico_${i + 1}}}"></span>`,
+            )
+            .join("")}
+          <div class="foto-nav" role="group" aria-label="Fotos do negócio" hidden>
+            <button type="button" data-anterior aria-label="Foto anterior"></button>
+            <span data-posicao aria-hidden="true">1 / 4</span>
+            <span class="sr-only" data-foto-status role="status">Foto 1 de 4: Capa</span>
+            <button type="button" data-proxima aria-label="Próxima foto"></button>
+          </div>
+        </div>
       </div>
     </section>
     ${direcao.consultaAntes ? atendimento + servicos : servicos + atendimento}
@@ -180,7 +194,7 @@ export function paginaDoTema(
     </section>
   </main>
   <footer class="footer"><div class="wrap"><p>© {{ano}} {{nome}}</p><a href="#inicio">Voltar ao início</a></div></footer>
-  <script>${midiaEContato}\n${interacoes}</script>
+  <script>${galeria}\n${contatoPorAssunto}\n${interacoes}</script>
 </body>
 </html>`;
 }

@@ -29,11 +29,13 @@ type Direcao = {
     painel: string,
     destaque: string,
     sobreDestaque: string,
+    reflexo: string,
   ];
   acao: string;
   secoes: string;
   imagem: string;
   titulo: string;
+  chamada?: string;
   abertura: string;
   raio?: string;
   consultaAntes?: boolean;
@@ -44,11 +46,12 @@ const direcoes = {
     capa: "poster",
     galeria: "mosaico",
     fonte: "expressiva",
-    cores: ["#18163b", "#f5f2ff", "#292653", "#dfd2ff", "#211746"],
+    cores: ["#141025", "#f8f1ff", "#2a174a", "#f8a5df", "#32142a", "#803ff5"],
     acao: "Planejar projeto",
     secoes: "Serviços",
     imagem: "50% 45%",
     titulo: "Da primeira ideia ao último detalhe.",
+    chamada: "Ideias em grande formato.",
     abertura:
       "Identidade, sites e projetos digitais. Conte o que você quer colocar no mundo.",
   },
@@ -56,7 +59,7 @@ const direcoes = {
     capa: "dupla",
     galeria: "mosaico",
     fonte: "editorial",
-    cores: ["#f5f4ef", "#232820", "#e3e6dc", "#334637", "#fff"],
+    cores: ["#e9e0d1", "#2c261e", "#d3c2a8", "#432b2d", "#fff8ec", "#ae6d46"],
     acao: "Explorar meu projeto",
     secoes: "Projetos",
     imagem: "50% 55%",
@@ -68,7 +71,7 @@ const direcoes = {
     capa: "arco",
     galeria: "fileiras",
     fonte: "editorial",
-    cores: ["#f2f7f5", "#193535", "#dceee7", "#29534d", "#fff"],
+    cores: ["#f8e8dd", "#412125", "#f0c8b7", "#743830", "#fff4ec", "#e37f65"],
     acao: "Consultar atendimento",
     secoes: "Cuidados",
     imagem: "50% 42%",
@@ -81,7 +84,7 @@ const direcoes = {
     capa: "cena",
     galeria: "fileiras",
     fonte: "editorial",
-    cores: ["#211812", "#fff7ec", "#392820", "#f1c799", "#261810"],
+    cores: ["#1d0f0a", "#fff3e4", "#381811", "#ffc374", "#341605", "#dc4a29"],
     acao: "Abrir cardápio",
     secoes: "À mesa",
     imagem: "50% 58%",
@@ -93,11 +96,12 @@ const direcoes = {
     capa: "ficha",
     galeria: "fileiras",
     fonte: "humana",
-    cores: ["#eaf1f9", "#112748", "#d7e6f6", "#214778", "#fff"],
+    cores: ["#111f51", "#f2f6ff", "#213671", "#a9e1ff", "#142755", "#345bfe"],
     acao: "Consultar especialista",
     secoes: "Áreas de atuação",
     imagem: "50% 46%",
     titulo: "Clareza para a próxima decisão.",
+    chamada: "Decida com clareza.",
     abertura:
       "Organize as dúvidas da sua empresa e encontre o ponto de partida para a conversa.",
   },
@@ -105,7 +109,7 @@ const direcoes = {
     capa: "vitrine",
     galeria: "colecao",
     fonte: "expressiva",
-    cores: ["#f7eaf2", "#401830", "#eed7e7", "#772958", "#fff"],
+    cores: ["#3e1034", "#fff0ee", "#632049", "#ffb783", "#411b29", "#d63281"],
     acao: "Explorar coleção",
     secoes: "Coleção",
     imagem: "50% 38%",
@@ -118,7 +122,7 @@ const direcoes = {
     capa: "janela",
     galeria: "colecao",
     fonte: "precisa",
-    cores: ["#222743", "#f3f4ff", "#303858", "#ffd34a", "#201c0e"],
+    cores: ["#17192a", "#f7f5ff", "#292b47", "#ff7a36", "#211224", "#fd4017"],
     acao: "Consultar treino",
     secoes: "Modalidades",
     imagem: "50% 49%",
@@ -130,7 +134,7 @@ const direcoes = {
     capa: "ficha",
     galeria: "fileiras",
     fonte: "precisa",
-    cores: ["#1f2c35", "#f5f8fa", "#2d414e", "#ffd786", "#211a0e"],
+    cores: ["#182028", "#f4f7fb", "#27333d", "#fbd254", "#292100", "#f28a13"],
     acao: "Pedir orçamento",
     secoes: "Serviços",
     imagem: "50% 50%",
@@ -143,7 +147,7 @@ const direcoes = {
     capa: "cena",
     galeria: "mosaico",
     fonte: "editorial",
-    cores: ["#e8f2f3", "#153d45", "#d4e8e9", "#14535e", "#fff"],
+    cores: ["#102e3c", "#ecf9ff", "#184c5e", "#acebd1", "#123629", "#2dc0df"],
     acao: "Consultar datas",
     secoes: "Experiências",
     imagem: "50% 56%",
@@ -156,19 +160,20 @@ const direcoes = {
     capa: "dupla",
     galeria: "fileiras",
     fonte: "humana",
-    cores: ["#f4f2fa", "#272340", "#e7e0f3", "#513e81", "#fff"],
+    cores: ["#f9e9ec", "#421f3e", "#f0c4d2", "#713458", "#fff4ef", "#e67678"],
     acao: "Encontrar atendimento",
     secoes: "Atendimento",
     imagem: "50% 50%",
     raio: "20px",
     titulo: "O atendimento que você procura, por perto.",
+    chamada: "Perto de você.",
     abertura: "Encontre serviços, fale com a equipe ou consulte como chegar.",
   },
   barbearia: {
     capa: "janela",
     galeria: "fileiras",
     fonte: "precisa",
-    cores: ["#302020", "#ffede1", "#482e2a", "#edaf8d", "#311b17"],
+    cores: ["#291717", "#fff4e5", "#462623", "#ffd299", "#321e1a", "#c45746"],
     acao: "Escolher horário",
     secoes: "Corte e barba",
     imagem: "48% 42%",
@@ -179,11 +184,12 @@ const direcoes = {
     capa: "cena",
     galeria: "mosaico",
     fonte: "editorial",
-    cores: ["#eef0db", "#283c25", "#dee5c4", "#355133", "#fff"],
+    cores: ["#132e21", "#f4fae9", "#234831", "#d4ed9e", "#22361d", "#6baa47"],
     acao: "Consultar locação",
     secoes: "A chácara",
     imagem: "50% 52%",
     titulo: "Um fim de semana ao ar livre.",
+    chamada: "Um fim de semana lá fora.",
     abertura:
       "Planeje seu encontro e consulte datas, capacidade e opções de locação.",
   },
@@ -191,13 +197,14 @@ const direcoes = {
     capa: "dupla",
     galeria: "colecao",
     fonte: "expressiva",
-    cores: ["#f8f5db", "#253a26", "#e7ebca", "#2d5635", "#fff"],
+    cores: ["#e1f1c7", "#223722", "#c3e1a3", "#28543d", "#fff8de", "#ffce55"],
     acao: "Montar lista de compras",
     secoes: "Setores",
     imagem: "50% 45%",
     raio: "14px",
     consultaAntes: true,
     titulo: "A feira da semana começa aqui.",
+    chamada: "A feira começa aqui.",
     abertura:
       "Monte sua lista e consulte as ofertas vigentes antes de sair de casa.",
   },
@@ -205,12 +212,13 @@ const direcoes = {
     capa: "vitrine",
     galeria: "colecao",
     fonte: "expressiva",
-    cores: ["#edf1ff", "#192958", "#dce4ff", "#283b84", "#fff"],
+    cores: ["#112376", "#eef2ff", "#203cad", "#eeff91", "#212655", "#6593ff"],
     acao: "Buscar no catálogo",
     secoes: "Calçados",
     imagem: "50% 60%",
     consultaAntes: true,
     titulo: "Encontre seu próximo par.",
+    chamada: "O par da vez.",
     abertura:
       "Explore estilos, filtre pela sua numeração e consulte os modelos disponíveis.",
   },
@@ -218,7 +226,8 @@ const direcoes = {
 
 export function direcaoDoTema(slug: keyof typeof direcoes) {
   const direcao: Direcao = direcoes[slug];
-  const [fundo, tinta, painel, destaque, sobreDestaque] = direcao.cores;
+  const [fundo, tinta, painel, destaque, sobreDestaque, reflexo] =
+    direcao.cores;
   const [familia] = fontes[direcao.fonte];
   return {
     ...direcao,
@@ -230,7 +239,7 @@ export function direcaoDoTema(slug: keyof typeof direcoes) {
     ].join("\n"),
     tokens: `
       --bg: ${fundo}; --ink: ${tinta}; --panel: ${painel};
-      --accent: ${destaque}; --on: ${sobreDestaque};
+      --accent: ${destaque}; --on: ${sobreDestaque}; --tint: ${reflexo};
       --display: "${familia}", ${direcao.fonte === "editorial" ? "Georgia, serif" : "system-ui, sans-serif"};
       --display-weight: ${direcao.fonte === "editorial" ? 400 : 700};
       --radius: ${direcao.raio ?? "4px"};
