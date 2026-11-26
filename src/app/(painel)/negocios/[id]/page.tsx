@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { anotar, apagarNegocio, criarPrevia, editarNegocio, mudarEtapa, novaCobranca, statusPrevia } from "@/acoes/operacao";
 import { Confirmar, Copiar, Enviar, Form } from "@/components/cliente";
 import { Expansivel, Gaveta } from "@/components/gaveta";
+import { temas } from "@/lib/temas";
 import { CamposPrevia } from "@/components/gerar-previa";
 import { Icone } from "@/components/icones";
 import { Avatar, Campo, dataHora, quando, SeloEtapa } from "@/components/ui";
@@ -30,7 +31,7 @@ export default async function Negocio({ params }: { params: Promise<{ id: string
   if (!n) notFound();
   const [modelos, base, checkout] = await Promise.all([db.modelo.findMany({ where: { ativo: true }, orderBy: { atualizadoEm: "desc" }, select: { id: true, nome: true, html: true } }), enderecoPublico(), ativo("checkout")]);
   const padrao = new Set<string>(VARIAVEIS.map((v) => v.id));
-  const listaModelos = modelos.map((m) => ({ id: m.id, nome: m.nome, extras: marcacoes(m.html).filter((v) => !padrao.has(v)) }));
+  const listaModelos = [...temas, ...modelos].map((m) => ({ id: m.id, nome: m.nome, extras: marcacoes(m.html).filter((v) => !padrao.has(v)) }));
   const mensagens = n.eventos.filter((e) => e.tipo === "MENSAGEM_ENVIADA" || e.tipo === "RESPOSTA_RECEBIDA");
   const ultimas = mensagens.slice(0, 3).reverse();
   const etapaIdx = ordemEtapa(n.etapa);

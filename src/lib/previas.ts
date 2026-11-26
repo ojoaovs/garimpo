@@ -3,6 +3,7 @@ import "server-only";
 import { aleatorio } from "@/lib/cripto";
 import { configGeral, enderecoPublico } from "@/lib/config";
 import { db } from "@/lib/db";
+import { temaPorId } from "@/lib/temas";
 import { aplicarTrocas, preencher, valoresDoNegocio, type Troca } from "@/lib/modelos";
 import { avancarEtapa, registrarEvento, type Autor } from "@/lib/negocios";
 
@@ -16,6 +17,11 @@ const slugDe = (nome: string) =>
     .slice(0, 40) || "previa";
 
 export async function gerarPrevia(negocioId: string, modeloId: string, valores: Record<string, string>, autor: Autor) {
+  const tema = temaPorId(modeloId);
+  if (tema) {
+    const m = await db.modelo.upsert({ where: { slug: tema.id }, update: {}, create: { slug: tema.id, nome: tema.nome, html: tema.html, trocas: tema.trocas } });
+    modeloId = m.id;
+  }
   const [n, m, geral] = await Promise.all([
     db.negocio.findUnique({ where: { id: negocioId }, select: { id: true, nome: true } }),
     db.modelo.findUnique({ where: { id: modeloId }, select: { id: true, nome: true } }),

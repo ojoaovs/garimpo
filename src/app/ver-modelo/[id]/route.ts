@@ -1,3 +1,4 @@
+import { temaPorId } from "@/lib/temas";
 import { db } from "@/lib/db";
 import { paginaSimples, respostaHtmlIsolada } from "@/lib/html-seguro";
 import { aplicarTrocas, preencher, VARIAVEIS, type Troca } from "@/lib/modelos";
@@ -9,7 +10,7 @@ export const dynamic = "force-dynamic";
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await usuarioAtual())) return respostaHtmlIsolada(paginaSimples("Entre no painel", "Faça login para ver o modelo."), 401);
   const { id } = await params;
-  const m = await db.modelo.findUnique({ where: { id } });
+  const m = temaPorId(id) ?? await db.modelo.findUnique({ where: { id } });
   if (!m) return respostaHtmlIsolada(paginaSimples("Modelo não encontrado", ""), 404);
   let trocas: Troca[] = [];
   try {

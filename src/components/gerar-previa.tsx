@@ -18,6 +18,7 @@ export function CamposPrevia({ modelos }: { modelos: { id: string; nome: string;
           </option>
         ))}
       </select>
+      {id && <a href={`/ver-modelo/${encodeURIComponent(id)}`} target="_blank" rel="noopener noreferrer" className="btn btn-linha btn-sm">Visualizar tema antes de gerar</a>}
       {m?.extras.map((v) => (
         <label key={v} className="block">
           <span className="mb-1 block text-[13px] text-tinta-2">

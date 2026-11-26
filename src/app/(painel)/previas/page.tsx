@@ -1,3 +1,4 @@
+import { temas } from "@/lib/temas";
 import Link from "next/link";
 
 import { Copiar } from "@/components/cliente";
@@ -19,7 +20,9 @@ export default async function Previas() {
     <>
       <Cabecalho sobre="Material" titulo="Prévias e modelos" sub="Qualquer página HTML vira modelo. Cada prévia é o modelo preenchido com os dados de um negócio, num link próprio." acoes={<Link href="/previas/modelos/novo" className="btn btn-acao"><Icone nome="upload" /> Importar modelo</Link>} />
 
-      <h2 className="mb-4 text-[19px]">Modelos</h2>
+      <h2 className="mb-4 text-[19px]">Biblioteca Bradesign · {temas.length} temas</h2>
+      <div className="mb-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{temas.filter((_, i) => i % 3 === 0).map((t) => <div key={t.id} className="caixa p-4"><h3 className="mb-3 font-semibold">{t.nicho}</h3><div className="flex flex-wrap gap-2">{temas.filter(x => x.nicho === t.nicho).map(x => <a key={x.id} href={`/ver-modelo/${x.id}`} target="_blank" rel="noopener noreferrer" className="btn btn-linha btn-sm">{x.estilo}</a>)}</div></div>)}</div>
+      <h2 className="mb-4 text-[19px]">Modelos importados</h2>
       {modelos.length ? (
         <ul className="escalonado grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
           {modelos.map((m) => {
