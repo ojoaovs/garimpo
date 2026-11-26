@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coleção de sites | Garimpo</title>
+<style>
+@font-face{font-family:Bricolage;src:url(temas/fontes/bricolage-grotesque.woff2) format("woff2");font-weight:600 800;font-display:swap}
+@font-face{font-family:Instrument;src:url(temas/fontes/instrument-sans.woff2) format("woff2");font-weight:400 700;font-display:swap}
+*{box-sizing:border-box}body{margin:0;background:#161228;color:#fbf3ff;font:1rem/1.5 Instrument,system-ui,sans-serif}
+header,main,footer{width:min(1320px,calc(100% - 36px));margin-inline:auto}
+header{padding:18px 0;border-bottom:1px solid #ffffff37;font:700 1.2rem Bricolage,system-ui,sans-serif}
+h1,h2,p{margin:0}h1{font:700 clamp(3.4rem,8.6vw,8.8rem)/.93 Bricolage,system-ui,sans-serif;letter-spacing:-.067em;max-width:11ch;text-wrap:balance}
+.lead{padding:clamp(40px,7vw,90px) 0;display:grid;grid-template-columns:1.5fr 1fr;align-items:end;gap:24px}
+.lead p{max-width:29ch;font-size:clamp(1rem,2vw,1.4rem);color:#e9daf5}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.card{min-height:340px;display:grid;align-items:end;color:#fff;text-decoration:none;isolation:isolate;position:relative;overflow:hidden;border-radius:10px;background:#322046}
+.card:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,#191020f3,#24182a97 40%,transparent 74%)}
+.card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform 550ms cubic-bezier(.22,.75,.2,1)}
+.card:is(:hover,:focus-visible) img{transform:scale(1.065)}
+.card:focus-visible{outline:3px solid #ffb6e9;outline-offset:4px}
+.card div{padding:23px}.card p{font-size:.86rem}.card h2{font:700 clamp(2rem,4vw,4rem)/1 Bricolage,system-ui,sans-serif;letter-spacing:-.045em;margin:4px 0 11px}
+.card span{text-decoration:underline;text-underline-offset:4px;font-weight:650}
+footer{padding:24px 0 35px}footer a{color:#eecef4}
+@media(max-width:890px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.card{min-height:300px}}
+@media(max-width:570px){.grid,.lead{grid-template-columns:1fr}.card{min-height:280px}}
+@media(prefers-reduced-motion:reduce){.card img{transition:none}}
+</style></head><body>
+<header>Garimpo</header><main><div class="lead"><h1>Coleção de sites</h1><p>Abra um modelo para ver a galeria de fotos e experimentar o recurso de atendimento do segmento.</p></div>
+<div class="grid"><a class="card" href="modelos/studio.html">
+    <img src="./temas/fotos/30008706.webp" alt="" loading="lazy">
+    <div><p>Agência, design e tecnologia</p><h2>Studio</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/forma.html">
+    <img src="./temas/fotos/1571460.webp" alt="" loading="lazy">
+    <div><p>Arquitetura e imobiliária</p><h2>Forma</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/calma.html">
+    <img src="./temas/fotos/11774389.webp" alt="" loading="lazy">
+    <div><p>Clínica, estética e bem-estar</p><h2>Calma</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/mesa.html">
+    <img src="./temas/fotos/958545.webp" alt="" loading="lazy">
+    <div><p>Restaurante e cafeteria</p><h2>Mesa</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/atlas.html">
+    <img src="./temas/fotos/3184291.webp" alt="" loading="lazy">
+    <div><p>Contabilidade e consultoria</p><h2>Atlas</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/vitrine.html">
+    <img src="./temas/fotos/1926769.webp" alt="" loading="lazy">
+    <div><p>Loja de moda e acessórios</p><h2>Vitrine</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/pulso.html">
+    <img src="./temas/fotos/1552242.webp" alt="" loading="lazy">
+    <div><p>Academia, esporte e uniformes</p><h2>Pulso</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/oficio.html">
+    <img src="./temas/fotos/4489702.webp" alt="" loading="lazy">
+    <div><p>Oficina e serviços técnicos</p><h2>Ofício</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/horizonte.html">
+    <img src="./temas/fotos/248797.webp" alt="" loading="lazy">
+    <div><p>Turismo, hospedagem e eventos</p><h2>Horizonte</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/essencia.html">
+    <img src="./temas/fotos/11159533.webp" alt="" loading="lazy">
+    <div><p>Negócio local e atendimento</p><h2>Essência</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/barbearia.html">
+    <img src="./temas/fotos/3998421.webp" alt="" loading="lazy">
+    <div><p>Barbearia</p><h2>Navalha</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/chacara.html">
+    <img src="./temas/fotos/20200267.webp" alt="" loading="lazy">
+    <div><p>Chácara para locação e lazer</p><h2>Refúgio</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/mercado.html">
+    <img src="./temas/fotos/1128678.webp" alt="" loading="lazy">
+    <div><p>Mercado e supermercado</p><h2>Feira</h2><span>Abrir demonstração</span></div>
+  </a><a class="card" href="modelos/calcados.html">
+    <img src="./temas/fotos/2529148.webp" alt="" loading="lazy">
+    <div><p>Loja de sapatos e calçados</p><h2>Passo</h2><span>Abrir demonstração</span></div>
+  </a></div></main><footer><a href="https://github.com/ojoaovs/garimpo">Garimpo no GitHub</a></footer>
+</body></html>
