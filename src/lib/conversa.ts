@@ -149,7 +149,7 @@ export async function receberMensagem(m: Recebida): Promise<"gravada" | "repetid
     db.evento.findFirst({ where: { negocioId: n.id, tipo: "MENSAGEM_ENVIADA" }, orderBy: { criadoEm: "desc" }, select: { criadoEm: true } }),
   ]);
   const automatica = respostaAutomatica({ texto: m.texto, primeiraResposta: anteriores === 0, recebidaEm: quando, nossaUltimaEm: nossa?.criadoEm ?? null });
-  const pedido = automatica ? null : pedidoExplicito(m.texto);
+  const pedido = pedidoExplicito(m.texto);
 
   await db.$transaction(async (tx) => {
     await registrarEvento({ negocioId: n.id, agente: "CONVERSA", tipo: "RESPOSTA_RECEBIDA", texto: m.texto, externoId: m.id, automatica, criadoEm: quando }, tx);

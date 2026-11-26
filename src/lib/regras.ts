@@ -23,15 +23,15 @@ export function pareceAutomatica(corpo: string): boolean {
 /** Automática pelo texto, ou pela pressa: a 1ª resposta em menos de 10 s não foi digitada. */
 export function respostaAutomatica(e: { texto: string; primeiraResposta: boolean; recebidaEm: Date; nossaUltimaEm: Date | null }): boolean {
   if (pareceAutomatica(e.texto)) return true;
-  if (!e.primeiraResposta || !e.nossaUltimaEm) return false;
-  const ms = e.recebidaEm.getTime() - e.nossaUltimaEm.getTime();
-  return ms >= 0 && ms < 10_000;
+  // Rapidez não prova que a resposta seja automática.
+  return false;
 }
 
 export function pedidoExplicito(corpo: string): "humano" | "parar" | null {
   const t = normalizar(corpo);
   if (/\b(quero|preciso|posso|gostaria de)\b.{0,35}\b(falar|conversar)\b.{0,25}\b(humano|pessoa|atendente)\b|\b(atendimento humano|falar com humano)\b/.test(t)) return "humano";
   if (/\b(nao (tenho|temos) interesse|sem interesse|pare de (me )?(mandar|enviar)|nao (me )?(mande|envie)|remova meu (numero|contato)|nao quero)\b/.test(t)) return "parar";
+  if (/^(?:obrigad[oa](?: mesmo)?|valeu|tchau|ate (?:logo|mais)|nao,? obrigad[oa]|dispenso|agora nao)[.!\s]*$/.test(t.trim())) return "parar";
   return null;
 }
 
