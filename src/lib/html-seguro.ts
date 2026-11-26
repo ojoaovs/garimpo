@@ -8,7 +8,8 @@ export function respostaHtmlIsolada(html: string, status = 200) {
     status,
     headers: {
       "content-type": "text/html; charset=utf-8",
-      "content-security-policy": "sandbox allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation",
+      "content-security-policy": "sandbox allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation; frame-ancestors 'self'",
+      "x-frame-options": "SAMEORIGIN",
       "x-content-type-options": "nosniff",
       "referrer-policy": "no-referrer",
       "cache-control": "no-store",
