@@ -31,7 +31,7 @@ export default async function Negocio({ params }: { params: Promise<{ id: string
   if (!n) notFound();
   const [modelos, base, checkout] = await Promise.all([db.modelo.findMany({ where: { ativo: true, NOT: [{ slug: { startsWith: "brd-tema-" } }, { slug: { startsWith: "brd-premium-" } }] }, orderBy: { atualizadoEm: "desc" }, select: { id: true, nome: true, html: true } }), enderecoPublico(), ativo("checkout")]);
   const padrao = new Set<string>(VARIAVEIS.map((v) => v.id));
-  const listaModelos = [...temas.map((m) => ({ id: m.id, nome: m.nome, extras: marcacoes(m.html).filter((v) => !padrao.has(v)), defaults: m.defaults })), ...modelos.map((m) => ({ id: m.id, nome: m.nome, extras: marcacoes(m.html).filter((v) => !padrao.has(v)) }))];
+  const listaModelos = [...temas.map((m) => ({ id: m.id, nome: m.nome, extras: marcacoes(m.html).filter((v) => !padrao.has(v)), defaults: m.defaults, categoria: m.categoria })), ...modelos.map((m) => ({ id: m.id, nome: m.nome, extras: marcacoes(m.html).filter((v) => !padrao.has(v)) }))];
   const mensagens = n.eventos.filter((e) => e.tipo === "MENSAGEM_ENVIADA" || e.tipo === "RESPOSTA_RECEBIDA");
   const ultimas = mensagens.slice(0, 3).reverse();
   const etapaIdx = ordemEtapa(n.etapa);
