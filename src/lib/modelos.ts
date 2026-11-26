@@ -94,7 +94,8 @@ export type DadosNegocio = {
 /** Os valores padrão que um negócio dá para as variáveis. */
 export function valoresDoNegocio(n: DadosNegocio): Record<string, string> {
   const fone = (n.whatsapp ?? n.telefone ?? "").replace(/\D/g, "");
-  const br = fone.match(/^55(\d{2})(\d{4,5})(\d{4})$/);
+  const numero = /^(?:\d{10}|\d{11})$/.test(fone) ? `55${fone}` : fone;
+  const br = numero.match(/^55(\d{2})(\d{4,5})(\d{4})$/);
   const iniciais = n.nome
     .split(/\s+/)
     .filter((p) => p.length > 2)
@@ -107,7 +108,7 @@ export function valoresDoNegocio(n: DadosNegocio): Record<string, string> {
     categoria: n.categoria ?? "",
     endereco: n.endereco ?? "",
     telefone: br ? `(${br[1]}) ${br[2]}-${br[3]}` : (n.telefone ?? ""),
-    whatsapp_link: fone ? `https://wa.me/${fone}` : "",
+    whatsapp_link: br ? `https://wa.me/${numero}` : "",
     nota: n.nota ? n.nota.toLocaleString("pt-BR", { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : "",
     avaliacoes: n.avaliacoes ? String(n.avaliacoes) : "",
     maps_link: n.linkMaps ?? "",

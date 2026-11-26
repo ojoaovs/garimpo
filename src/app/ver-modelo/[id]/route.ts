@@ -20,7 +20,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
     /* sem trocas */
   }
   const exemplo = Object.fromEntries(VARIAVEIS.map((v) => [v.id, v.exemplo]));
-  if (tema) Object.assign(exemplo, { nome: tema.demo, categoria: tema.nicho.split(",")[0], cidade: "Sua cidade", foto: "", whatsapp_link: "#contato", maps_link: "", endereco: "", telefone: "", iniciais: tema.demo.slice(0,2) });
+  if (tema) Object.assign(exemplo, tema.defaults, { nome: tema.demo, categoria: tema.nicho.split(",")[0], cidade: "Sua cidade", foto: "", whatsapp_link: "#contato", maps_link: "", endereco: "", telefone: "", iniciais: tema.demo.slice(0,2) });
   const html = preencher(aplicarTrocas(m.html, trocas), new Proxy(exemplo as Record<string, string>, { get: (o, k: string) => o[k] ?? `[${k}]` }));
   return respostaHtmlIsolada(html);
 }

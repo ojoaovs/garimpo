@@ -35,7 +35,7 @@ export async function gerarPrevia(negocioId: string, modeloId: string, valores: 
       slug,
       modeloId: m.id,
       negocioId: n.id,
-      valores: JSON.stringify(valores ?? {}),
+      valores: JSON.stringify({ ...(tema?.defaults ?? {}), ...(valores ?? {}) }),
       expiraEm: new Date(Date.now() + Math.max(1, geral.validadePreviaDias) * 86_400_000),
     },
   });
@@ -67,9 +67,10 @@ export async function renderizarPrevia(slug: string, contarVisita = false): Prom
     /* sem trocas */
   }
   const base = valoresDoNegocio(p.negocio);
-  const valores = { ...base, ...Object.fromEntries(Object.entries(extra).filter(([, v]) => v !== "")) };
+  const tema = temaPorId(p.modelo.slug);
+  const valores: Record<string, string> = { ...tema?.defaults, ...base, ...(tema ? { foto_capa: base.foto } : {}), ...Object.fromEntries(Object.entries(extra).filter(([, v]) => v !== "")) };
   if (p.modelo.slug.startsWith("brd-premium-")) {
-    for (const chave of ["foto", "whatsapp_link", "maps_link"]) {
+    for (const chave of ["foto", "foto_capa", "foto_1", "foto_2", "foto_3", "whatsapp_link", "maps_link"]) {
       try { const u = new URL(valores[chave] || ""); if (u.protocol !== "https:" || u.username || u.password || (chave === "whatsapp_link" && u.hostname !== "wa.me")) valores[chave] = ""; }
       catch { valores[chave] = ""; }
     }
