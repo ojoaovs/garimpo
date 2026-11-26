@@ -2,13 +2,14 @@ import { z } from "zod";
 
 import { corpo, ok, rota } from "@/lib/api";
 import { db } from "@/lib/db";
+import { temas } from "@/lib/temas";
 import { marcacoes } from "@/lib/modelos";
 
 export const dynamic = "force-dynamic";
 
 export const GET = rota(async () => {
-  const ms = await db.modelo.findMany({ orderBy: { atualizadoEm: "desc" }, include: { _count: { select: { previas: true } } } });
-  return ok({ modelos: ms.map((m) => ({ id: m.id, nome: m.nome, slug: m.slug, ativo: m.ativo, variaveis: [...new Set([...marcacoes(m.html), ...JSON.parse(m.trocas).map((t: { para: string }) => t.para)])], previas: m._count.previas, atualizadoEm: m.atualizadoEm })) });
+  const ms = await db.modelo.findMany({ where: { NOT: [{ slug: { startsWith: "brd-tema-" } }, { slug: { startsWith: "brd-premium-" } }] }, orderBy: { atualizadoEm: "desc" }, include: { _count: { select: { previas: true } } } });
+  return ok({ modelos: [...temas.map(t => ({ id: t.id, nome: t.nome, slug: t.id, ativo: true, variaveis: marcacoes(t.html), previas: 0, atualizadoEm: null })), ...ms.map((m) => ({ id: m.id, nome: m.nome, slug: m.slug, ativo: m.ativo, variaveis: [...new Set([...marcacoes(m.html), ...JSON.parse(m.trocas).map((t: { para: string }) => t.para)])], previas: m._count.previas, atualizadoEm: m.atualizadoEm }))] });
 });
 
 const troca = z.object({ de: z.string().min(1).max(500), para: z.string().regex(/^[a-zA-Z_]\w*$/) });

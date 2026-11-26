@@ -24,11 +24,11 @@ export async function gerarPrevia(negocioId: string, modeloId: string, valores: 
   }
   const [n, m, geral] = await Promise.all([
     db.negocio.findUnique({ where: { id: negocioId }, select: { id: true, nome: true } }),
-    db.modelo.findUnique({ where: { id: modeloId }, select: { id: true, nome: true } }),
+    db.modelo.findUnique({ where: { id: modeloId }, select: { id: true, nome: true, slug: true, ativo: true } }),
     configGeral(),
   ]);
   if (!n) throw new Error("Negócio não encontrado.");
-  if (!m) throw new Error("Modelo não encontrado.");
+  if (!m || !m.ativo || m.slug.startsWith("brd-tema-")) throw new Error("Modelo indisponível para novas prévias.");
   const slug = `${slugDe(n.nome)}-${aleatorio(4).toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) || "x"}`;
   const previa = await db.previa.create({
     data: {
@@ -68,5 +68,11 @@ export async function renderizarPrevia(slug: string, contarVisita = false): Prom
   }
   const base = valoresDoNegocio(p.negocio);
   const valores = { ...base, ...Object.fromEntries(Object.entries(extra).filter(([, v]) => v !== "")) };
+  if (p.modelo.slug.startsWith("brd-premium-")) {
+    for (const chave of ["foto", "whatsapp_link", "maps_link"]) {
+      try { const u = new URL(valores[chave] || ""); if (u.protocol !== "https:" || u.username || u.password || (chave === "whatsapp_link" && u.hostname !== "wa.me")) valores[chave] = ""; }
+      catch { valores[chave] = ""; }
+    }
+  }
   return preencher(aplicarTrocas(p.modelo.html, trocas), valores);
 }

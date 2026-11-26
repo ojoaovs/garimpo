@@ -10,7 +10,8 @@ export const dynamic = "force-dynamic";
 export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   if (!(await usuarioAtual())) return respostaHtmlIsolada(paginaSimples("Entre no painel", "Faça login para ver o modelo."), 401);
   const { id } = await params;
-  const m = temaPorId(id) ?? await db.modelo.findUnique({ where: { id } });
+  const tema = temaPorId(id);
+  const m = tema ?? await db.modelo.findUnique({ where: { id } });
   if (!m) return respostaHtmlIsolada(paginaSimples("Modelo não encontrado", ""), 404);
   let trocas: Troca[] = [];
   try {
@@ -19,6 +20,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
     /* sem trocas */
   }
   const exemplo = Object.fromEntries(VARIAVEIS.map((v) => [v.id, v.exemplo]));
+  if (tema) Object.assign(exemplo, { nome: tema.demo, categoria: tema.nicho.split(",")[0], cidade: "Sua cidade", foto: "", whatsapp_link: "#contato", maps_link: "", endereco: "", telefone: "", iniciais: tema.demo.slice(0,2) });
   const html = preencher(aplicarTrocas(m.html, trocas), new Proxy(exemplo as Record<string, string>, { get: (o, k: string) => o[k] ?? `[${k}]` }));
   return respostaHtmlIsolada(html);
 }
