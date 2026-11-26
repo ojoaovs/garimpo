@@ -9,7 +9,7 @@ export function CamposPrevia({ modelos }: { modelos: { id: string; nome: string;
   const [id, setId] = useState(modelos[0]?.id ?? "");
   const m = modelos.find((x) => x.id === id);
   const categorias = [...new Set(modelos.map(x => x.categoria ?? "Modelos importados"))];
-  const labels: Record<string, string> = { titulo_principal: "Título principal", subtitulo_principal: "Descrição principal", titulo_servicos: "Título da seção de serviços", titulo_contato: "Título de contato", foto_capa: "Foto de capa (URL HTTPS)", foto_1: "Foto do serviço 1 (URL HTTPS)", foto_2: "Foto do serviço 2 (URL HTTPS)", foto_3: "Foto do serviço 3 (URL HTTPS)", servico_1: "Serviço 1", servico_2: "Serviço 2", servico_3: "Serviço 3", descricao_1: "Descrição do serviço 1", descricao_2: "Descrição do serviço 2", descricao_3: "Descrição do serviço 3" };
+  const labels: Record<string, string> = { horarios_disponiveis: "Horários disponíveis (data e hora)", datas_disponiveis: "Datas disponíveis", itens_catalogo: "Itens do catálogo / encarte", validade_ofertas: "Validade das ofertas", titulo_principal: "Título principal", subtitulo_principal: "Descrição principal", titulo_servicos: "Título da seção de serviços", titulo_contato: "Título de contato", foto_capa: "Foto de capa (URL HTTPS)", foto_1: "Foto do serviço 1 (URL HTTPS)", foto_2: "Foto do serviço 2 (URL HTTPS)", foto_3: "Foto do serviço 3 (URL HTTPS)", servico_1: "Serviço 1", servico_2: "Serviço 2", servico_3: "Serviço 3", descricao_1: "Descrição do serviço 1", descricao_2: "Descrição do serviço 2", descricao_3: "Descrição do serviço 3" };
   if (!modelos.length) return <p className="text-[14px] text-tinta-3">Nenhum modelo ainda. Importe um em Prévias e modelos.</p>;
   return (
     <div className="flex flex-col gap-3">
@@ -24,7 +24,7 @@ export function CamposPrevia({ modelos }: { modelos: { id: string; nome: string;
           <span className="mb-1 block text-[13px] text-tinta-2">
             {labels[v] ?? v}
           </span>
-          <input name={`v_${v}`} className="campo" placeholder={v.startsWith("foto_") ? "https://... (opcional)" : m.defaults?.[v]} maxLength={2000} />
+          {["horarios_disponiveis", "datas_disponiveis", "itens_catalogo"].includes(v) ? <><textarea name={`v_${v}`} className="campo" rows={5} maxLength={2000} placeholder={v === "horarios_disponiveis" ? "2027-01-15 09:00\n2027-01-15 10:00" : v === "datas_disponiveis" ? "2027-01-15, 2027-01-16" : "Produto|Categoria|Preço|Tamanhos separados por vírgula|Detalhe"} /><span className="text-[12px] text-tinta-3">{v === "itens_catalogo" ? "Um item por linha. Preço e tamanhos opcionais; informe somente dados reais. Sem cadastro, exemplos sem preço são exibidos." : "Informe somente datas ou horários confirmados. Sem cadastro, a página solicita uma consulta, não confirma disponibilidade."}</span></> : <input name={`v_${v}`} type={v === "validade_ofertas" ? "date" : "text"} className="campo" placeholder={v.startsWith("foto_") ? "https://... (opcional)" : m.defaults?.[v]} maxLength={2000} />}
         </label>
       ))}</div></details>}
       <div>

@@ -75,5 +75,6 @@ export async function renderizarPrevia(slug: string, contarVisita = false): Prom
       catch { valores[chave] = ""; }
     }
   }
-  return preencher(aplicarTrocas(p.modelo.html, trocas), valores);
+  const html = p.modelo.slug.startsWith("brd-premium-") ? p.modelo.html.replace(/<div class="topline">[\s\S]*?<\/div>(?=<section class="hero">)/, "") : p.modelo.html;
+  return preencher(aplicarTrocas(html, trocas), valores);
 }
