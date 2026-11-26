@@ -3,7 +3,7 @@ import "server-only";
 import { aleatorio } from "@/lib/cripto";
 import { configGeral, enderecoPublico } from "@/lib/config";
 import { db } from "@/lib/db";
-import { temaPorId } from "@/lib/temas";
+import { defaultsDoTemaPublicado, prefixoTemasPremium, temaPorId } from "@/lib/temas";
 import { aplicarTrocas, preencher, valoresDoNegocio, type Troca } from "@/lib/modelos";
 import { avancarEtapa, registrarEvento, type Autor } from "@/lib/negocios";
 
@@ -18,6 +18,9 @@ const slugDe = (nome: string) =>
 
 export async function gerarPrevia(negocioId: string, modeloId: string, valores: Record<string, string>, autor: Autor) {
   const tema = temaPorId(modeloId);
+  const defaults = { ...tema?.defaults };
+  // A capa do negócio tem prioridade sobre a foto ilustrativa da coleção.
+  delete defaults.foto_capa;
   if (tema) {
     const m = await db.modelo.upsert({ where: { slug: tema.id }, update: {}, create: { slug: tema.id, nome: tema.nome, html: tema.html, trocas: tema.trocas } });
     modeloId = m.id;
@@ -35,7 +38,7 @@ export async function gerarPrevia(negocioId: string, modeloId: string, valores: 
       slug,
       modeloId: m.id,
       negocioId: n.id,
-      valores: JSON.stringify({ ...(tema?.defaults ?? {}), ...(valores ?? {}) }),
+      valores: JSON.stringify({ ...defaults, ...(valores ?? {}) }),
       expiraEm: new Date(Date.now() + Math.max(1, geral.validadePreviaDias) * 86_400_000),
     },
   });
@@ -67,14 +70,29 @@ export async function renderizarPrevia(slug: string, contarVisita = false): Prom
     /* sem trocas */
   }
   const base = valoresDoNegocio(p.negocio);
-  const tema = temaPorId(p.modelo.slug);
-  const valores: Record<string, string> = { ...tema?.defaults, ...base, ...(tema ? { foto_capa: base.foto } : {}), ...Object.fromEntries(Object.entries(extra).filter(([, v]) => v !== "")) };
-  if (p.modelo.slug.startsWith("brd-premium-")) {
+  const defaults = defaultsDoTemaPublicado(p.modelo.slug);
+  const premium = p.modelo.slug.startsWith(prefixoTemasPremium);
+  const atual = premium && p.modelo.slug.endsWith("-v5");
+  const valores: Record<string, string> = {
+    ...defaults,
+    ...base,
+    ...(defaults ? { foto_capa: base.foto || (atual ? defaults.foto_capa : "") } : {}),
+    ...Object.fromEntries(Object.entries(extra).filter(([, v]) => v !== "")),
+  };
+  if (premium) {
     for (const chave of ["foto", "foto_capa", "foto_1", "foto_2", "foto_3", "whatsapp_link", "maps_link"]) {
-      try { const u = new URL(valores[chave] || ""); if (u.protocol !== "https:" || u.username || u.password || (chave === "whatsapp_link" && u.hostname !== "wa.me")) valores[chave] = ""; }
-      catch { valores[chave] = ""; }
+      const ilustracao = atual && chave.startsWith("foto_") ? defaults?.[chave] ?? "" : "";
+      if (ilustracao && valores[chave] === ilustracao) continue;
+      try {
+        const u = new URL(valores[chave] || "");
+        if (u.protocol !== "https:" || u.username || u.password || (chave === "whatsapp_link" && u.hostname !== "wa.me")) valores[chave] = ilustracao;
+      } catch {
+        valores[chave] = ilustracao;
+      }
     }
   }
-  const html = p.modelo.slug.startsWith("brd-premium-") ? p.modelo.html.replace(/<div class="topline">[\s\S]*?<\/div>(?=<section class="hero">)/, "") : p.modelo.html;
+  const html = premium && !atual
+    ? p.modelo.html.replace(/<div class="topline">[\s\S]*?<\/div>(?=<section class="hero">)/, "")
+    : p.modelo.html;
   return preencher(aplicarTrocas(html, trocas), valores);
 }

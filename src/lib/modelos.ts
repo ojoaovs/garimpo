@@ -126,46 +126,50 @@ export const MODELO_EXEMPLO = `<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{nome}} · {{cidade}}</title>
+<title>{{nome}}</title>
 <style>
-  :root { --tinta:#151515; --papel:#f7f5f0; --linha:#dedad0; --acao:#1f5c46; }
-  * { box-sizing:border-box; margin:0; }
-  body { font:17px/1.55 system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--tinta); background:var(--papel); }
-  main { max-width:960px; margin:0 auto; padding:56px 24px 80px; }
-  .topo { display:flex; align-items:center; gap:14px; }
-  .selo { width:52px; height:52px; border-radius:14px; background:var(--tinta); color:var(--papel); display:grid; place-items:center; font-weight:700; letter-spacing:.04em; }
-  .categoria { font-size:13px; text-transform:uppercase; letter-spacing:.14em; color:#6b675e; }
-  h1 { font-size:clamp(40px,7vw,76px); line-height:1.02; letter-spacing:-.03em; margin:48px 0 20px; max-width:14ch; }
-  .lead { font-size:20px; color:#45423b; max-width:52ch; }
-  .nota { display:inline-flex; gap:8px; align-items:baseline; margin-top:28px; padding:10px 14px; border:1px solid var(--linha); border-radius:12px; background:#fff; }
-  .nota b { font-size:22px; }
-  .acoes { display:flex; flex-wrap:wrap; gap:12px; margin-top:36px; }
-  .btn { display:inline-flex; align-items:center; height:52px; padding:0 22px; border-radius:12px; font-weight:600; text-decoration:none; }
-  .btn-1 { background:var(--acao); color:#fff; }
-  .btn-2 { border:1px solid var(--linha); color:var(--tinta); background:#fff; }
-  .grade { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:16px; margin-top:72px; }
-  .bloco { background:#fff; border:1px solid var(--linha); border-radius:16px; padding:22px; }
-  .bloco h2 { font-size:15px; margin-bottom:6px; }
-  .bloco p { color:#55524a; font-size:15px; }
-  footer { margin-top:72px; padding-top:20px; border-top:1px solid var(--linha); font-size:14px; color:#6b675e; }
+  * { box-sizing: border-box; }
+  :root { --papel: #edf2ec; --tinta: #20382f; --painel: #c7dbc8; }
+  body { margin: 0; color: var(--tinta); background: var(--papel); font: 1rem/1.55 system-ui, sans-serif; }
+  main { width: min(1120px, 100% - 32px); margin-inline: auto; }
+  h1 { font: 400 clamp(3.25rem, 9vw, 8rem)/.98 Georgia, serif; letter-spacing: -.055em; margin: 12px 0 24px; overflow-wrap: anywhere; }
+  h2 { font-size: 1.15rem; margin: 0 0 8px; }
+  p { margin: 0; overflow-wrap: anywhere; }
+  :empty.optional, a[href=""], .rating:not(:has(b:not(:empty))), .data:not(:has(p:not(:empty))) { display: none; }
+  :focus-visible { outline: 3px solid currentColor; outline-offset: 4px; }
+  .capa { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, .7fr); gap: 24px; padding-block: clamp(24px, 6vw, 88px); align-items: stretch; }
+  .capa > div:first-child { display: grid; align-content: center; }
+  .marca { display: grid; place-items: center; min-height: 285px; overflow: hidden; border-radius: 50% 50% 8px 8px / 36% 36% 8px 8px; background: var(--painel); font: 400 clamp(5rem, 14vw, 12rem)/1 Georgia, serif; }
+  .acoes { display: flex; flex-wrap: wrap; gap: 10px; }
+  .acoes a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 9px 16px; border: 1px solid currentColor; color: inherit; border-radius: 8px; font-weight: 650; text-decoration: none; }
+  .acoes a:first-child { background: var(--tinta); border-color: var(--tinta); color: var(--papel); }
+  .acoes a:focus-visible { outline-color: var(--tinta); }
+  .dados { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 22px; padding-block: 32px; border-block: 1px solid #20382f40; }
+  .avaliacoes:not(:empty)::before { content: " · "; }
+  .avaliacoes:not(:empty)::after { content: " avaliações"; }
+  footer { padding-block: 18px; }
+  @media (max-width: 650px) { .capa { grid-template-columns: 1fr; } .marca { min-height: 200px; } }
 </style>
 </head>
 <body>
 <main>
-  <div class="topo"><span class="selo">{{iniciais}}</span><span class="categoria">{{categoria}} · {{cidade}}</span></div>
-  <h1>{{nome}}</h1>
-  <p class="lead">Atendimento com hora marcada, sem fila e sem ligação: o cliente escolhe o horário pelo celular e recebe a confirmação no WhatsApp.</p>
-  <div class="nota"><b>{{nota}}</b> no Google · {{avaliacoes}} avaliações</div>
-  <div class="acoes">
-    <a class="btn btn-1" href="{{whatsapp_link}}">Chamar no WhatsApp</a>
-    <a class="btn btn-2" href="{{maps_link}}">Como chegar</a>
+  <section class="capa" aria-labelledby="titulo">
+    <div>
+      <p class="optional">{{categoria}}</p>
+      <h1 id="titulo">{{nome}}</h1>
+      <div class="acoes">
+        <a href="{{whatsapp_link}}" target="_blank" rel="noopener noreferrer">Chamar no WhatsApp</a>
+        <a href="{{maps_link}}" target="_blank" rel="noopener noreferrer">Como chegar</a>
+      </div>
+    </div>
+    <div class="marca" aria-hidden="true">{{iniciais}}</div>
+  </section>
+  <div class="dados">
+    <section class="data"><h2>Onde fica</h2><p class="optional">{{endereco}}</p><p class="optional">{{cidade}}</p></section>
+    <section class="data"><h2>Telefone</h2><p>{{telefone}}</p></section>
+    <section class="rating"><h2>Avaliação no Google</h2><p><b>{{nota}}</b><span class="avaliacoes">{{avaliacoes}}</span></p></section>
   </div>
-  <div class="grade">
-    <div class="bloco"><h2>Onde fica</h2><p>{{endereco}}</p></div>
-    <div class="bloco"><h2>Telefone</h2><p>{{telefone}}</p></div>
-    <div class="bloco"><h2>Horário</h2><p>Segunda a sábado, das 9h às 19h.</p></div>
-  </div>
-  <footer>{{nome}} · {{cidade}} · {{ano}}</footer>
+  <footer>© {{ano}} {{nome}}</footer>
 </main>
 </body>
 </html>`;

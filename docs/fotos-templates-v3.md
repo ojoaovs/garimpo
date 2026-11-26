@@ -2,6 +2,8 @@
 
 Fonte: Pexels, licença https://www.pexels.com/license/. As imagens são referências ilustrativas, não registros de clientes. URLs otimizadas do CDN; disponibilidade externa não garantida. Substituir por fotos autorizadas do cliente antes de publicar comercialmente.
 
+A coleção v5 serve versões WebP dessas mesmas fotos em `public/temas/fotos`. Cada arquivo usa o ID da foto no Pexels. As licenças SIL Open Font License das fontes hospedadas junto com a coleção ficam em `public/temas/fontes`.
+
 ## Agência, design e tecnologia
 - https://www.pexels.com/photo/30008706/
 - https://www.pexels.com/photo/8367791/

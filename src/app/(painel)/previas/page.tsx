@@ -23,9 +23,26 @@ export default async function Previas({ searchParams }: { searchParams: Promise<
     <>
       <Cabecalho sobre="Material" titulo="Prévias e modelos" sub="Qualquer página HTML vira modelo. Cada prévia é o modelo preenchido com os dados de um negócio, num link próprio." acoes={<Link href="/previas/modelos/novo" className="btn btn-acao"><Icone nome="upload" /> Importar modelo</Link>} />
 
-      <div className="mb-7 flex items-end justify-between gap-4"><div><h2 className="text-[23px] font-semibold">Coleção Bradesign</h2><p className="mt-1 text-[14px] text-tinta-3">{temas.length} modelos · fotos ilustrativas · textos prontos</p></div><span className="selo">Premium</span></div>
+      <div className="mb-7">
+        <h2 className="text-[23px] font-semibold">Coleção Bradesign</h2>
+        <p className="mt-1 text-[14px] text-tinta-3">Abra um modelo para experimentar o site. Use fotos do negócio ao gerar a prévia.</p>
+      </div>
       <nav className="mb-6 flex flex-wrap gap-2" aria-label="Filtrar por segmento"><Link href="/previas" className={`btn btn-sm ${!segmento ? "btn-acao" : "btn-linha"}`}>Todos ({temas.length})</Link>{categorias.map(c => <Link key={c} href={`/previas?segmento=${encodeURIComponent(c)}`} className={`btn btn-sm ${segmento === c ? "btn-acao" : "btn-linha"}`}>{c}</Link>)}</nav>
-      <div className="mb-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">{filtrados.map(t => <article key={t.id} className="caixa caixa-viva overflow-hidden"><a href={`/ver-modelo/${t.id}`} target="_blank" rel="noopener noreferrer" className="block"><div className="relative h-[230px] overflow-hidden border-b border-linha bg-white"><iframe src={`/ver-modelo/${t.id}`} title={t.nome} sandbox="" loading="lazy" tabIndex={-1} className="pointer-events-none absolute left-0 top-0 h-[790px] w-[1280px] origin-top-left scale-[0.32] border-0" /></div><div className="flex items-center justify-between gap-4 p-4"><div><h3 className="display text-[18px]">{t.nome}</h3><p className="mt-1 text-[13px] text-tinta-3">{t.categoria}</p></div><span aria-hidden="true" className="text-[22px]">↗</span></div></a></article>)}</div>
+      <div className="mb-12 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        {filtrados.map(t => (
+          <article key={t.id} className="caixa caixa-viva overflow-hidden">
+            <a href={`/ver-modelo/${t.id}`} target="_blank" rel="noopener noreferrer" className="group block">
+              <div className="relative aspect-[16/10] overflow-hidden border-b border-linha bg-white">
+                <iframe src={`/ver-modelo/${t.id}`} title={t.nome} aria-hidden="true" sandbox="" loading="lazy" tabIndex={-1} className="pointer-events-none absolute left-0 top-0 size-[312.5%] origin-top-left scale-[0.32] border-0" />
+              </div>
+              <div className="p-4">
+                <h3 className="display text-[18px] underline-offset-4 group-hover:underline">{t.nome}</h3>
+                <p className="mt-1 text-[13px] text-tinta-3">{t.categoria}</p>
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
       <h2 className="mb-4 text-[19px]">Modelos importados</h2>
       {modelos.length ? (
         <ul className="escalonado grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
